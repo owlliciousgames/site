@@ -13,8 +13,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
   font-family: 'Inter', sans-serif;
   color: white;
   background: black;
@@ -22,6 +21,8 @@ html, body {
 
 body {
   position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .video-bg {
@@ -48,21 +49,24 @@ body {
 .content {
   position: relative;
   z-index: 2;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 40px;
+  padding: 32px 20px;
   box-sizing: border-box;
 }
 
 .content-inner {
-  max-width: 720px;
+  width: min(650px, 100%);
   backdrop-filter: blur(6px);
-  background: rgba(0,0,0,0.6);
-  padding: 40px 50px;
-  border-radius: 10px;
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px 20px;
+  border-radius: 64px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -88,13 +92,35 @@ p {
   margin: 0;
 }
 
+@media (max-width: 700px) {
+  .content {
+    align-items: flex-start;
+    padding: 24px 16px 32px;
+  }
+
+  .content-inner {
+    margin: 24px 0;
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <video class="video-bg" autoplay muted loop playsinline>
-  <source src="/bg.mp4" type="video/mp4">
+  <source src="bg.mp4" type="video/mp4">
 </video>
 
 <!-- This dims the video, undesired at the moment. -->
@@ -120,6 +146,21 @@ p {
 
   </div>
 </div>
+
+<script>
+window.addEventListener("load", async () => {
+  const video = document.querySelector(".video-bg");
+  if (!video) return;
+
+  video.muted = true;
+
+  try {
+    await video.play();
+  } catch (err) {
+    console.error("Autoplay failed:", err);
+  }
+});
+</script>
 
 </body>
 </html>
